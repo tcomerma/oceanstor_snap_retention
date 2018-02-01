@@ -70,8 +70,9 @@ def in_monthly(date, interval_weekly, interval_montly):
 
 def last_of_month(date, snapshots):
     for i in snapshots:
-        if (date < i['date'] and
-           date.month == i['date'].month and
+        timestamp = datetime.datetime.fromtimestamp(int(i['TIMESTAMP']))
+        if (date < timestamp and
+           date.month == timestamp.month and
            i['keep'] is True):
             return False
     return True
