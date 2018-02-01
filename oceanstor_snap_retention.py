@@ -101,6 +101,14 @@ def in_day_weekly(i, weekday):
         return False
 
 
+def remove_not_matching_snapshots(snapshots, prefix):
+    s = []
+    for i in snapshots:
+        if i['NAME'].startswith(prefix):
+            s.append(i)
+    return s
+
+
 def create_snapshots(num):
     snapshots = []
     for i in range(0, num):
@@ -142,6 +150,7 @@ def main(argv):
     default_interval_weekly = 31
     default_interval_monthly = 90
     default_day_weekly = 6  # Sun
+    default_snapshot_prefix = ""
 
     # Read command line parameters
     try:
@@ -201,6 +210,8 @@ def main(argv):
         day_weekly = int(get_config(parser, i,
                                     "day_weekly", default_day_weekly))
         dry_run = get_config(parser, i, "dry_run", default_dry_run)
+        snapshot_prefix = get_config(parser, i, "snapshot_prefix",
+                                     default_snapshot_prefix)
         if dry_run == "True":
             dry_run = True
         else:
@@ -211,8 +222,10 @@ def main(argv):
         print "   interval_monthly {0}".format(interval_monthly)
         print "   day_weekly {0}".format(day_weekly)
 
-        # Get snapshots
-        snapshots = os.get_snapshots(i)
+        # Get snapshots and remover not matching snapshot_prefix
+        snapshots = remove_not_matching_snapshots(os.get_snapshots(i),
+                                                  snapshot_prefix)
+
         # Mark all snapshots as deletable
         for i in snapshots:
             i['keep'] = False

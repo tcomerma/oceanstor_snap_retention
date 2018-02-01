@@ -53,7 +53,7 @@ class OceanStor(object):
         self.ctx.verify_mode = ssl.CERT_NONE
         # Afegir debuglevel=1 a HTTPSHandler per depurar crides
         self.opener = urllib2.build_opener(urllib2.HTTPSHandler(context=self.ctx),
-        #                                   urllib2.HTTPCookieProcessor(self.cookies))
+                                           urllib2.HTTPCookieProcessor(self.cookies))
         # self.opener = urllib2.build_opener(urllib2.HTTPSHandler(),
         #                                   urllib2.HTTPCookieProcessor(self.cookies))
         self.opener.addheaders = [('Content-Type', 'application/json; charset=utf-8')]
